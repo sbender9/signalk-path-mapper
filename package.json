@@ -1,0 +1,21 @@
+{
+  "name": "signalk-path-mapper",
+  "version": "1.0.0",
+  "description": "SignalK Node Server Plugin that maps the paths of incoming Signal K deltas to different paths",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "signalk-node-server-plugin"
+  ],
+  "author": "scott@scottbender.net",
+  "license": "Apache-2.0",
+  "dependencies": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sbender9/signalk-path-mapper"
+  }
+}
+
