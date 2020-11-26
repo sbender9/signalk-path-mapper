@@ -17,23 +17,29 @@ module.exports = function(app) {
   var plugin = {};
   var unsubscribes = []
 
+  function mapKPs(mappings, kps, key) {
+    kps.forEach(pathValue => {
+      mappings.forEach(mapping => {
+        if ( pathValue.path.startsWith(mapping.path) ) {
+          const newPath = mapping.newPath
+                + pathValue.path.slice(mapping.path.length, pathValue.path.length)
+          app.debug('mapping %s to %s to %s', key, pathValue.path, newPath)
+          pathValue.path = newPath
+        }
+      })
+    })
+  }
+
   plugin.start = function(props) {
     if ( props.mappings && props.mappings.length > 0 ) {
       app.registerDeltaInputHandler((delta, next) => {
         if ( delta.updates ) {
           delta.updates.forEach(update => {
             if ( update.values  ) {
-              let newValues = []
-              update.values.forEach(pathValue => {
-                props.mappings.forEach(mapping => {
-                  if ( pathValue.path.startsWith(mapping.path) ) {
-                    const newPath = mapping.newPath
-                      + pathValue.path.slice(mapping.path.length, pathValue.path.length)
-                    app.debug('mapping to %s to %s', pathValue.path, newPath)
-                    pathValue.path = newPath
-                  }
-                })
-              })
+              mapKPs(props.mappings, update.values, 'value')
+            }
+            if ( update.meta ) {
+              mapKPs(props.mappings, update.meta, 'meta')
             }
           })
         }
