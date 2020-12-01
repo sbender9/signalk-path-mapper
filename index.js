@@ -23,7 +23,7 @@ module.exports = function(app) {
         if ( pathValue.path.startsWith(mapping.path) ) {
           const newPath = mapping.newPath
                 + pathValue.path.slice(mapping.path.length, pathValue.path.length)
-          app.debug('mapping %s to %s to %s', key, pathValue.path, newPath)
+          app.debug('%s %s from %s to %s', (!mapping.duplicate ? 'mapping' : 'duplicating'), key, pathValue.path, newPath)
           if ( !mapping.duplicate ) {
             pathValue.path = newPath
           } else {
