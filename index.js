@@ -24,7 +24,22 @@ module.exports = function(app) {
           const newPath = mapping.newPath
                 + pathValue.path.slice(mapping.path.length, pathValue.path.length)
           app.debug('mapping %s to %s to %s', key, pathValue.path, newPath)
-          pathValue.path = newPath
+          if ( !mapping.duplicate ) {
+            pathValue.path = newPath
+          } else {
+            app.handleMessage(plugin.id, {
+              updates: [
+                {
+                  values: [
+                    {
+                      path: newPath,
+                      value: pathValue.value
+                    }
+                  ]
+                }
+              ]
+            })
+          }
         }
       })
     })
@@ -77,6 +92,12 @@ module.exports = function(app) {
               type: 'string',
               title: 'New Path',
               description: 'The path to map it to'
+            },
+            duplicate: {
+              type: 'boolean',
+              title: 'Duplicate',
+              description: 'Duplicate the path instead of renaming it',
+              default: false
             }
           }
         }
