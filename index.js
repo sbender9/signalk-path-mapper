@@ -17,10 +17,14 @@ module.exports = function(app) {
   var plugin = {};
   var unsubscribes = []
 
-  function mapKPs(mappings, kps, key) {
+  function mapKPs(mappings, kps, key, source) {
     kps.forEach(pathValue => {
       mappings.forEach(mapping => {
-        if ( pathValue.path.startsWith(mapping.path) ) {
+        if (
+          pathValue.path
+            && pathValue.path.startsWith(mapping.path)
+            && (!mapping.source || mapping.source == source)
+        ) {
           const newPath = mapping.newPath
                 + pathValue.path.slice(mapping.path.length, pathValue.path.length)
           app.debug('%s %s from %s to %s', (!mapping.duplicate ? 'mapping' : 'duplicating'), key, pathValue.path, newPath)
@@ -51,10 +55,10 @@ module.exports = function(app) {
         if ( delta.updates ) {
           delta.updates.forEach(update => {
             if ( update.values  ) {
-              mapKPs(props.mappings, update.values, 'value')
+              mapKPs(props.mappings, update.values, 'value', update.$source)
             }
             if ( update.meta ) {
-              mapKPs(props.mappings, update.meta, 'meta')
+              mapKPs(props.mappings, update.meta, 'meta', update.$source)
             }
           })
         }
@@ -92,6 +96,11 @@ module.exports = function(app) {
               type: 'string',
               title: 'New Path',
               description: 'The path to map it to'
+            },
+            source: {
+              type: 'string',
+              title: 'Source',
+              description: 'The $source to map (i.e actisense.234)'
             },
             duplicate: {
               type: 'boolean',
