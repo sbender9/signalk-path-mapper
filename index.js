@@ -20,9 +20,10 @@ module.exports = function(app) {
   function mapKPs(mappings, kps, key, source) {
     kps.forEach(pathValue => {
       mappings.forEach(mapping => {
+        let mapLength = mapping.path.split(".").length
         if (
           pathValue.path
-            && pathValue.path.startsWith(mapping.path)
+            && (pathValue.path.split(".").slice(0,mapLength).join(".") === mapping.path)
             && (!mapping.source || mapping.source == source)
         ) {
           const newPath = mapping.newPath
@@ -71,7 +72,7 @@ module.exports = function(app) {
     unsubscribes.forEach(f => f())
     unsubscribes = []
   }
-  
+
   plugin.id = "signalk-path-mapper"
   plugin.name = "Path Mapper"
   plugin.description = "SignalK Node Server Plugin that maps the paths of incoming Signal K deltas to different paths"
