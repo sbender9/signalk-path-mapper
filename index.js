@@ -20,10 +20,9 @@ module.exports = function(app) {
   function mapKPs(mappings, kps, key, source) {
     kps.forEach(pathValue => {
       mappings.forEach(mapping => {
-        let mapLength = mapping.path.split(".").length
         if (
           pathValue.path
-            && (pathValue.path.split(".").slice(0,mapLength).join(".") === mapping.path)
+            && (pathValue.path + '.').startsWith(mapping.path + '.')
             && (!mapping.source || mapping.source == source)
         ) {
           const newPath = mapping.newPath
