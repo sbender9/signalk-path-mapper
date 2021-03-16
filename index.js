@@ -22,7 +22,7 @@ module.exports = function(app) {
       mappings.forEach(mapping => {
         if (
           pathValue.path
-            && pathValue.path.startsWith(mapping.path)
+            && (pathValue.path + '.').startsWith(mapping.path + '.')
             && (!mapping.source || mapping.source == source)
         ) {
           const newPath = mapping.newPath
@@ -71,7 +71,7 @@ module.exports = function(app) {
     unsubscribes.forEach(f => f())
     unsubscribes = []
   }
-  
+
   plugin.id = "signalk-path-mapper"
   plugin.name = "Path Mapper"
   plugin.description = "SignalK Node Server Plugin that maps the paths of incoming Signal K deltas to different paths"
