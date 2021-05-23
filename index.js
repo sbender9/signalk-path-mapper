@@ -27,6 +27,7 @@ module.exports = function(app) {
         ) {
           const newPath = mapping.newPath
                 + pathValue.path.slice(mapping.path.length, pathValue.path.length)
+          const scaleFactor = mapping.scaleFactor
           app.debug('%s %s from %s to %s', (!mapping.duplicate ? 'mapping' : 'duplicating'), key, pathValue.path, newPath)
           if ( !mapping.duplicate ) {
             pathValue.path = newPath
@@ -37,7 +38,7 @@ module.exports = function(app) {
                   values: [
                     {
                       path: newPath,
-                      value: pathValue.value
+                      value: scaleFactor * pathValue.value
                     }
                   ]
                 }
@@ -96,6 +97,12 @@ module.exports = function(app) {
               type: 'string',
               title: 'New Path',
               description: 'The path to map it to'
+            },
+            scaleFactor: {
+              type: 'number',
+              title: 'Scale factor',
+              description: 'Factor, by which the mapped value is scaled',
+              default: 1.0
             },
             source: {
               type: 'string',
