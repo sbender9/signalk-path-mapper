@@ -89,7 +89,7 @@ module.exports = function(app) {
             path: {
               type: 'string',
               title: 'Path',
-              description: 'The full Signal K path to map',
+              description: 'The Signal K path to map',
               default: 'electrical.switches.bank.0.1'
             },
             newPath: {
