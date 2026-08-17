@@ -54,10 +54,10 @@ module.exports = function(app) {
       app.registerDeltaInputHandler((delta, next) => {
         if ( delta.updates ) {
           delta.updates.forEach(update => {
-            if ( update.values  ) {
+            if ( Array.isArray(update.values) ) {
               mapKPs(props.mappings, update.values, 'value', update.$source)
             }
-            if ( update.meta ) {
+            if ( Array.isArray(update.meta) ) {
               mapKPs(props.mappings, update.meta, 'meta', update.$source)
             }
           })
